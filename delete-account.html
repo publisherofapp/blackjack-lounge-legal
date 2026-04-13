@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delete Account – Blackjack Lounge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:     #D4AF37;
+      --gold-lt:  #F9D976;
+      --orange:   #FF8C00;
+      --bg:       #080808;
+      --bg2:      #111111;
+      --bg3:      #1a1a1a;
+      --border:   rgba(255,255,255,0.08);
+      --text:     #f0f0f0;
+      --muted:    rgba(255,255,255,0.45);
+      --red:      #C0392B;
+      --red-lt:   #E74C3C;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Starfield bg ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.25) 0%, transparent 0%),
+        radial-gradient(1px 1px at 34% 67%, rgba(255,255,255,0.18) 0%, transparent 0%),
+        radial-gradient(1px 1px at 56% 29%, rgba(255,255,255,0.22) 0%, transparent 0%),
+        radial-gradient(1px 1px at 78% 82%, rgba(255,255,255,0.15) 0%, transparent 0%),
+        radial-gradient(1px 1px at 90% 45%, rgba(255,255,255,0.2)  0%, transparent 0%),
+        radial-gradient(1px 1px at 23% 91%, rgba(255,255,255,0.12) 0%, transparent 0%),
+        radial-gradient(1px 1px at 67% 54%, rgba(255,255,255,0.17) 0%, transparent 0%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Layout ── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* ── Logo / header ── */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+    .logo-icon {
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--gold-lt), var(--gold), #996515);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 0 24px rgba(212,175,55,0.35);
+    }
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--gold);
+    }
+    .logo-sub {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(192,57,43,0.12);
+      border: 1px solid rgba(192,57,43,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--red-lt);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 6vw, 46px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 36px 0;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .card-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .card-icon.gold  { background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.25); }
+    .card-icon.red   { background: rgba(192,57,43,0.12);  border: 1px solid rgba(192,57,43,0.3); }
+    .card-icon.blue  { background: rgba(74,144,217,0.12); border: 1px solid rgba(74,144,217,0.25); }
+    .card-icon.white { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
+
+    .card-title h2 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Steps ── */
+    .steps { display: flex; flex-direction: column; gap: 14px; }
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-lt), var(--gold));
+      color: #000;
+      font-size: 12px;
+      font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-body { flex: 1; }
+    .step-body strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 3px;
+    }
+    .step-body p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .step-body a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .step-body a:hover { text-decoration: underline; }
+
+    /* ── Data table ── */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 0 0 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: top;
+    }
+    .data-table td:first-child { font-weight: 600; color: #fff; width: 45%; }
+    .data-table tr:last-child td { border-bottom: none; }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .pill.deleted  { background: rgba(192,57,43,0.15); color: var(--red-lt); border: 1px solid rgba(192,57,43,0.3); }
+    .pill.retained { background: rgba(212,175,55,0.1);  color: var(--gold);   border: 1px solid rgba(212,175,55,0.25); }
+
+    /* ── Warning box ── */
+    .warning {
+      background: rgba(192,57,43,0.08);
+      border: 1px solid rgba(192,57,43,0.25);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-top: 16px;
+    }
+    .warning-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .warning p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .warning strong { color: var(--red-lt); }
+
+    /* ── CTA button ── */
+    .cta-wrap { text-align: center; margin-top: 40px; }
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--red-lt), var(--red));
+      color: #fff;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 32px rgba(192,57,43,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 48px rgba(192,57,43,0.5);
+    }
+    .cta-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      margin-top: 64px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+      line-height: 1.8;
+    }
+    footer a { color: rgba(255,255,255,0.35); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Logo -->
+  <div class="logo-row">
+    <div class="logo-icon">🃏</div>
+    <div>
+      <div class="logo-text">Blackjack Lounge</div>
+      <div class="logo-sub">Account Management</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">⚠ Irreversible Action</div>
+    <h1>Delete Your Account</h1>
+    <p>You can request the permanent deletion of your Blackjack Lounge account and all associated data at any time. Please read the steps and information below carefully before proceeding.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Steps -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-icon gold">📋</div>
+      <h2>How to Request Account Deletion</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Send a deletion request email</strong>
+          <p>Email us at <a href="mailto:publisherofapp@gmail.com?subject=Delete%20My%20Blackjack%20Lounge%20Account">publisherofapp@gmail.com</a> with the subject line <em>"Delete My Blackjack Lounge Account"</em>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Include your account details</strong>
+          <p>Provide the email address linked to your Google account used to sign in to Blackjack Lounge, or your in-game username so we can locate your account.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>We'll confirm and process your request</strong>
+          <p>You'll receive a confirmation email within <strong style="color:#fff">7 business days</strong>. Your account and associated data will be permanently deleted within <strong style="color:#fff">30 days</strong> of your request.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data deleted -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-icon red">🗑</div>
+      <h2>What Data Gets Deleted</h2>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Data Type</th>
+          <th>Action</th>
+          <th>Retention Period</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Account profile (name, avatar)</td>
+          <td><span class="pill deleted">Deleted</span></td>
+          <td>Within 30 days</td>
+        </tr>
+        <tr>
+          <td>Game history & statistics</td>
+          <td><span class="pill deleted">Deleted</span></td>
+          <td>Within 30 days</td>
+        </tr>
+        <tr>
+          <td>Chip & diamond balance</td>
+          <td><span class="pill deleted">Deleted</span></td>
+          <td>Within 30 days</td>
+        </tr>
+        <tr>
+          <td>In-app messages & inbox</td>
+          <td><span class="pill deleted">Deleted</span></td>
+          <td>Within 30 days</td>
+        </tr>
+        <tr>
+          <td>Friends list & friend codes</td>
+          <td><span class="pill deleted">Deleted</span></td>
+          <td>Within 30 days</td>
+        </tr>
+        <tr>
+          <td>FCM notification token</td>
+          <td><span class="pill deleted">Deleted</span></td>
+          <td>Within 30 days</td>
+        </tr>
+        <tr>
+          <td>Purchase records (IAP)</td>
+          <td><span class="pill retained">Retained</span></td>
+          <td>Up to 7 years (legal/tax requirement)</td>
+        </tr>
+        <tr>
+          <td>Device ID (ban records)</td>
+          <td><span class="pill retained">Retained</span></td>
+          <td>Retained to prevent re-registration abuse</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="warning">
+      <div class="warning-icon">⚠️</div>
+      <p><strong>This action is permanent and irreversible.</strong> Once your account is deleted, your username, chip balance, purchased card decks, diamond balance, game history, and all progress cannot be recovered under any circumstances.</p>
+    </div>
+  </div>
+
+  <!-- Alternative -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-icon blue">💡</div>
+      <h2>Before You Delete</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">→</div>
+        <div class="step-body">
+          <strong>Having issues with the app?</strong>
+          <p>Contact our support team at <a href="mailto:publisherofapp@gmail.com?subject=Blackjack%20Lounge%20Support">publisherofapp@gmail.com</a> — we're happy to help resolve any problems before you decide to delete.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">→</div>
+        <div class="step-body">
+          <strong>Concerned about ads?</strong>
+          <p>You can remove all ads with a one-time purchase inside the app under Store → Remove Ads.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-wrap">
+    <a class="cta-btn" href="mailto:publisherofapp@gmail.com?subject=Delete%20My%20Blackjack%20Lounge%20Account&body=Hello%2C%0A%0AI%20would%20like%20to%20request%20the%20permanent%20deletion%20of%20my%20Blackjack%20Lounge%20account.%0A%0AAccount%20email%2Fusername%3A%20%5BYour%20email%20or%20username%5D%0A%0AThank%20you.">
+      Request Account Deletion
+    </a>
+    <p class="cta-note">This opens your email app with a pre-filled deletion request.</p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Blackjack Lounge · publisherofapp@gmail.com</p>
+    <p style="margin-top:8px;">
+      <a href="./privacy-policy.html">Privacy Policy</a>
+       &nbsp;·&nbsp;
+      <a href="./terms-and-conditions.html">Terms & Conditions</a>
+    </p>
+    <p style="margin-top:12px;">© 2025 Blackjack Lounge. All rights reserved.</p>
+  </footer>
+
+</div>
+</body>
+</html>
